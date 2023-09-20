@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bus Client</title>
+  <!-- Include Bing Maps API -->
+ 
+</head>
+<body>
+  <h1>Bus Client</h1>
+  <h1> You are signed in as <%=obj.BusNo%>
+  <div id="myMap" style="position:relative;width:600px;height:400px;"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+  <script type='text/javascript'>
+    function loadMapScenario() {
+      var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+        center: new Microsoft.Maps.Location(27.1767, 78.008072),
+        zoom: 12
+      });
+	  const obj = <%-JSON.stringify(obj) %>;
+	  const BusNo = obj.BusNo;
+	  console.log()
+      // Initialize Socket.io
+      const socket = io();
+	  console.log('Connected to the server');
+	  setInterval(() => {
+	  if ('geolocation' in navigator) {
+		navigator.geolocation.getCurrentPosition((position) => {
+		  const { latitude, longitude, speed , timestamp } = position.coords;
+		  socket.emit('busLocationUpdate', {
+			busNo: BusNo,
+			latitude,
+			longitude,
+			speed,
+			timestamp
+		  });
+		}, (error) => {
+		  console.error('Error getting geolocation:', error);
+		});
+	  } else {
+		console.error('Geolocation is not available in this browser.');
+	  }
+	}, 15000); 
+
+    }
+  </script>
+  <script src ='https://www.bing.com/api/maps/mapcontrol?key=AgR0x_K2TMMF0_KRIeZLiaXmJqlK8pR17S7fBdxlhNhwZYtWRZbPz8YZmt_H5sjh&callback=loadMapScenario' async defer></script>
+</body>
+</html>

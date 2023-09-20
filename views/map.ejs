@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>directionscreatedrivingrouteHTML</title>
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+        <style type='text/css'>
+		#main{
+			display:grid;
+			grid-template-columns:repeat(2,1fr);
+		}
+		/* Reset some default styles and set up the overall layout */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Segoe UI', Helvetica, Arial, Sans-Serif;
+  background-color: #f5f5f5; /* Change this to your preferred background color */
+}
+
+/* Navigation bar styles */
+nav {
+  background-color: red; /* Set the navigation bar background color to red */
+  color: white; /* Set the text color to white */
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.nav__logo a {
+  text-decoration: none;
+  color: white; /* Set the logo text color to white */
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.nav__links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.link a {
+  text-decoration: none;
+  color: white; /* Set link text color to white */
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Container styles */
+#main {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Adjust the column sizes as needed */
+}
+
+#box {
+  padding: 20px;
+  background-color: white; /* Set the background color of the box */
+}
+
+/* Map styles */
+#myMap {
+  height: 80vh; /* Set the map height to 80% of the container */
+  width: 100%;
+}
+
+/* Additional styles can be added as needed */
+
+		
+		</style>
+
+    </head>
+    <body>
+	<nav style="color:black;">
+        <div class="nav__logo"style="color:black;"><a href="#">FindRide</a></div>
+        <ul class="nav__links">
+          <li class="link"><a href="#home">Home</a></li>
+          <li class="link"><a href="#trending">Login</a></li>
+          <li class="link"><a href="#destination">Destinations</a></li>
+        </ul>
+      </nav>
+	<div id="main">
+		<div id ="box">
+		<h1><%=obj.BusNo%></h1>
+		<h1><%=obj.DriverName%></h1>
+		<h1><%=obj.ConductorName%></h1>
+		<h1><%=obj.ConductorMobile%></h1>
+		</div>
+        <div id='myMap' style="height:100vh;"></div>
+		 <script src="/socket.io/socket.io.js"></script>
+
+        <script type='text/javascript'>
+            function loadMapScenario() {
+               var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+			center: new Microsoft.Maps.Location(27.1767, 78.008072),
+			zoom: 12
+			});
+
+			Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
+			var directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+			directionsManager.setRequestOptions({ routeMode: Microsoft.Maps.Directions.RouteMode.driving });
+			const object = <%-JSON.stringify(obj.busStops) %>;
+			var waypoints = [];
+			for(let waypoint of object){
+				waypoints.push(new Microsoft.Maps.Directions.Waypoint({
+				address: waypoint.address,
+				location: new Microsoft.Maps.Location(waypoint.coOrdinates.longitude, waypoint.coOrdinates.latitude)
+			}));
+			}
+			console.log(waypoints);
+			for (var i = 0; i < waypoints.length; i++) {
+				directionsManager.addWaypoint(waypoints[i]);
+			}
+			directionsManager.calculateDirections();
+		const obj = <%- JSON.stringify(obj) %>
+						const BusNo = obj.BusNo;
+
+				const socket = io();
+				socket.emit('subscribeToBus', BusNo);
+						  
+				// Store the bus location pushpin separately
+				var busPushpin = null;
+
+				// Listen for bus location updates from the server
+				socket.on('busLocationUpdate', (data) => {
+				  console.log('location update AYI BHAI');
+
+				  // Assuming 'data' contains BusNo, latitude, and longitude
+				  const { BusNo, latitude, longitude } = data;
+
+				  // Create a pushpin on the map to represent the bus's location
+				  var busLocation = new Microsoft.Maps.Location(latitude, longitude);
+				  var pushpin = new Microsoft.Maps.Pushpin(busLocation, {
+					color: 'red', // Set pushpin color to orange
+					anchor: new Microsoft.Maps.Point(12, 24), // Adjust the anchor point for proper placement
+					visible: true, // Ensure the pushpin is visible
+					width: 100, // Set the width of the pushpin
+					height: 100, // Set the height of the pushpin
+				  });
+
+				  // Clear the previous bus pushpin (if exists)
+				  if (busPushpin) {
+					map.entities.remove(busPushpin);
+				  }
+
+				  // Add the new bus pushpin to the map
+				  map.entities.push(pushpin);
+
+				  // Update the busPushpin reference
+				  busPushpin = pushpin;
+				})
+			});
+			
+
+		  }
+        </script>
+        <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AgR0x_K2TMMF0_KRIeZLiaXmJqlK8pR17S7fBdxlhNhwZYtWRZbPz8YZmt_H5sjh&callback=loadMapScenario' async defer></script>
+    </body>
+</html>
