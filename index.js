@@ -381,7 +381,6 @@ app.get('/dashboard/search',async (req,res)=>{
     delete obj.password;
 	res.render('dashBoard',{obj});
 })
-io.listen(3000)
 const port = 8080 || 8000;
 server.listen(port,(req,res)=>{
     console.log("connected succesfully")
