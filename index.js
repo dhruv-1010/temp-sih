@@ -46,10 +46,16 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.sendStatus(200);
   });
-io.origins('*:*'); // Allow all origins (for development/testing; restrict in production)
+// Allow all origins (for development/testing; restrict in production)
+const corsOptions = {
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
 
+app.use(cors(corsOptions));
 // Use the cors middleware with Express
-app.use(cors());
 app.use(session(configSesion));
 
 app.use(passport.initialize());
@@ -82,7 +88,6 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 const userSubscriptions = {};
-
 io.on('connection', (socket) => {
   console.log('A user connected.');
 
