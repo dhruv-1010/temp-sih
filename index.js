@@ -15,6 +15,8 @@ const http = require('http');
 const socketIo = require('socket.io');
 const LocationDB = require('./models/LocationDB')
 app.use(express.static(path.join(__dirname, '/public')));
+const cors = require('cors'); // Import the cors package
+
 
 // body parser
 app.use(express.urlencoded({ extended: true })); //for form data
@@ -44,7 +46,10 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.sendStatus(200);
   });
- 
+io.origins('*:*'); // Allow all origins (for development/testing; restrict in production)
+
+// Use the cors middleware with Express
+app.use(cors());
 app.use(session(configSesion));
 
 app.use(passport.initialize());
