@@ -6,6 +6,7 @@
  
 </head>
 <body>
+
   <h1>Bus Client</h1>
   <h1> You are signed in as <%=obj.BusNo%>
   <div id="myMap" style="position:relative;width:600px;height:400px;"></div>
@@ -21,18 +22,42 @@
 	  console.log()
       // Initialize Socket.io
       const socket = io();
-	  console.log('Connected to the server');
+	  console.log('Connected to the server');  
+	  var busPushpin = null;
+
 	  setInterval(() => {
 	  if ('geolocation' in navigator) {
 		navigator.geolocation.getCurrentPosition((position) => {
-		  const { latitude, longitude, speed , timestamp } = position.coords;
+		  const { latitude, longitude, speed } = position.coords;
+		  const timestamp = new Date(position.timestamp);
 		  socket.emit('busLocationUpdate', {
 			busNo: BusNo,
 			latitude,
 			longitude,
 			speed,
 			timestamp
-		  });
+		  });	
+		  var busLocation = new Microsoft.Maps.Location(latitude, longitude);
+		  var pushpin = new Microsoft.Maps.Pushpin(busLocation, {
+					color:'red',
+					anchor: new Microsoft.Maps.Point(20, 40), // Adjust the anchor point for proper placement
+					visible: true, // Ensure the pushpin is visible
+					width: 100, // Set the width of the pushpin
+					height: 100, // Set the height of the pushpin
+		});
+
+				  // Clear the previous bus pushpin (if exists)
+				  if (busPushpin) {
+					map.entities.remove(busPushpin);
+				  }
+
+				  // Add the new bus pushpin to the map
+				  map.entities.push(pushpin);
+
+				  // Update the busPushpin reference
+				  busPushpin = pushpin;
+				  map.setView({ center: busLocation, zoom: 15 });
+
 		}, (error) => {
 		  console.error('Error getting geolocation:', error);
 		});
@@ -40,7 +65,6 @@
 		console.error('Geolocation is not available in this browser.');
 	  }
 	}, 15000); 
-
     }
   </script>
   <script src ='https://www.bing.com/api/maps/mapcontrol?key=AgR0x_K2TMMF0_KRIeZLiaXmJqlK8pR17S7fBdxlhNhwZYtWRZbPz8YZmt_H5sjh&callback=loadMapScenario' async defer></script>

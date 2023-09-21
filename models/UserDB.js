@@ -10,11 +10,9 @@ var UserSchema = new Schema({
     },
     mobileno: {
         type: Number,
-        required: true
     },
     age: {
         type: Number,
-        required: true 
     },
     email :{
         type: String,

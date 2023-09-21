@@ -113,7 +113,7 @@ nav {
 				directionsManager.addWaypoint(waypoints[i]);
 			}
 			directionsManager.calculateDirections();
-		const obj = <%- JSON.stringify(obj) %>
+		const obj = <%- JSON.stringify(obj) %>;
 						const BusNo = obj.BusNo;
 
 				const socket = io();
@@ -132,11 +132,11 @@ nav {
 				  // Create a pushpin on the map to represent the bus's location
 				  var busLocation = new Microsoft.Maps.Location(latitude, longitude);
 				  var pushpin = new Microsoft.Maps.Pushpin(busLocation, {
-					color: 'red', // Set pushpin color to orange
+					color:'red',
 					anchor: new Microsoft.Maps.Point(12, 24), // Adjust the anchor point for proper placement
 					visible: true, // Ensure the pushpin is visible
-					width: 100, // Set the width of the pushpin
-					height: 100, // Set the height of the pushpin
+					width: 20, // Set the width of the pushpin
+					height: 20, // Set the height of the pushpin
 				  });
 
 				  // Clear the previous bus pushpin (if exists)
@@ -149,6 +149,7 @@ nav {
 
 				  // Update the busPushpin reference
 				  busPushpin = pushpin;
+				  map.setView({ center: busLocation, zoom: 10 });
 				})
 			});
 			
