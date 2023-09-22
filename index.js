@@ -139,23 +139,6 @@ io.on('connection', (socket) => {
   });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // user-client signup and usage
 app.get('/signup', (req, res)=>{
     res.render('signup')
@@ -371,7 +354,7 @@ const dummyBusData = {
         },
         {
             address: "GLA University",
-            coOrdinates: { longitude: 27.605001, latitude: 78.592165 }
+            coOrdinates: { longitude: 27.605001, latitude: 77.592165 }
         }
     ]
 };
