@@ -1,18 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Bus Client</title>
-  <!-- Include Bing Maps API -->
- 
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/dash.css">
 </head>
 <body>
-
-  <h1>Bus Client</h1>
+    <nav class="sidebar close">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                    <img src="/img/image (1).jpeg" alt="">
+                </span>
+                <div class="text header-text">
+                    <span class="name">Map</span>
+                    <span class="profession">live locator</span>
+                </div>
+            </div>
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+        <div class="menu-bar">
+            <div class="menu">
+                <li class="search-box">
+                    <i class='bx bx-search-alt-2 icon' ></i>
+                        <input type="search" placeholder="Search ...">
+                </li>
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-bell icon'></i>
+                            <span class="text nav-text">Notification</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-home icon'></i>
+                            <span class="text nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-home icon'></i>
+                            <span class="text nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class='bx bx-log-out-circle icon'></i>
+                            <span class="text nav-text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
   <h1> You are signed in as <%=obj.BusNo%>
-  <div id="myMap" style="position:relative;width:600px;height:400px;"></div>
+  <div id="myMap" style="width:600px;height:400px;"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
   <script type='text/javascript'>
-    function loadMapScenario() {
+	const toogle = document.querySelector('toggle');
+	toggl
+  
+  
+  
+
+
+  function loadMapScenario() {
       var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
         center: new Microsoft.Maps.Location(27.1767, 78.008072),
         zoom: 12
