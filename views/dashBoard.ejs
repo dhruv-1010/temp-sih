@@ -15,9 +15,6 @@
                 <span class="image">
                     <img src="/img/image (1).jpeg" alt="">
                 </span>
-                <div class="text header-text">
-                    <span class="name">Map</span>
-                    <span class="profession">live locator</span>
                 </div>
             </div>
             <i class='bx bx-chevron-right toggle'></i>
@@ -38,17 +35,17 @@
                     <li class="nav-link">
                         <a href="#">
                             <i class='bx bx-home icon'></i>
-                            <span class="text nav-text">Dashboard</span>
+                            <span class="text nav-text"><%=obj.BusNo%></span>
                         </a>
                     </li>
                     <li class="nav-link">
                         <a href="#">
                             <i class='bx bx-home icon'></i>
-                            <span class="text nav-text">Dashboard</span>
+                            <span class="text nav-text"><%=obj.DriverName%></span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="/auth/busLogout/<%=obj._id%>">
                             <i class='bx bx-log-out-circle icon'></i>
                             <span class="text nav-text">Logout</span>
                         </a>
@@ -56,13 +53,26 @@
                 </ul>
             </div>
         </div>
-    </nav>
-  <h1> You are signed in as <%=obj.BusNo%>
-  <!-- <div id="myMap" style="width:600px;height:400px;"></div> -->
+	</nav>
+	 <div class="content">
+        <div id="myMap" class="map-container"></div>
+    </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
   <script type='text/javascript'>
-	const toogle = document.querySelector('toggle');
-	toggl
+	// navbar JavaScript
+const navBar = document.querySelector('.toggle');
+const main = document.querySelector('.sidebar');
+const text = document.querySelectorAll('.nav-text');
+// JavaScript to toggle the sidebar width and content margin
+const content = document.querySelector('.content');
+
+
+navBar.addEventListener('click', () => {
+   main.classList.toggle('open'); // Toggle the "open" class for sidebar
+    content.classList.toggle('open'); 
+    // Toggle the visibility of nav-text elements
+});
+
   
   
   

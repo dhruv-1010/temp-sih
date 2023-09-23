@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 *{
     padding: 0%;
     margin: 0%;
@@ -18,7 +19,7 @@
 body{
     height: 100vh;
     background:var(--body-color);
-
+	font-family: 'Poppins', sans-serif;
 }
 
 .sidebar{
@@ -125,4 +126,35 @@ header .image-text .header-text{
 }
 .sidebar li a:hover .icon,.sidebar li a:hover .text{
     color: var(--sidebar-color);
+}
+/* Add this CSS to your existing CSS file or create a new one */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 250px;
+	background: var(--sidebar-color);/* Adjust the background color as needed */
+    transition: width 0.3s ease; /* Add transition for smooth sliding */
+    overflow-x: hidden;
+}
+
+.content {
+    margin-left: 250px; /* Initially push the content to the right */
+    transition: margin-left 0.3s ease; /* Add transition for content movement */ /* Add some padding to the content */
+}
+
+.map-container {
+    width: 100%; /* Set the map container to fill the available width */
+    height: 100vh; /* Set the height of the map container as needed */
+    /* Add any other map container styles you require */
+}
+
+/* CSS to toggle the sidebar width and content margin */
+.sidebar.open {
+    width: 60px; /* Adjust the width when the sidebar is open */
+}
+
+.content.open {
+    margin-left: 70px; /* Adjust the margin when the sidebar is open */
 }

@@ -259,30 +259,26 @@ app.post('/android/busLogin', async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 });
+app.get('/auth/busLogout/:id', async (req, res) => {
+    const BusId = req.params.id;
 
-app.get('/auth/busLogout/:id', (req, res) => {
-	const BusId = req.params.id;
-    BusDetailDB.findById( BusId, (err, bus) => {
-        if (err) {
-            console.error('An error occurred:', err);
-            return res.status(500).json({ message: 'Internal server error' });
-        }
+    try {
+        // Assuming BusDetailDB is your Mongoose model
+        const bus = await BusDetailDB.findById(BusId);
 
         if (!bus) {
             return res.status(401).json({ message: 'Bus not found' });
         }
-        // Update isLoggedIn to false
+
         bus.isLoggedIn = false;
-        // Save the updated bus document
-        bus.save((err) => {
-            if (err) {
-                console.error('Error updating bus:', err);
-                return res.status(500).json({ message: 'Internal server error' });
-            }
-            // Redirect or respond with a success message
-            return res.redirect('auth/busLogin'); // Redirect to the login page after logout
-        });
-    });
+
+        await bus.save();
+
+        return res.redirect('/auth/busLogin'); // Make sure the route is correct
+    } catch (err) {
+        console.error('Error:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
 });
 
 // BUS LOGIN END
@@ -299,12 +295,15 @@ app.post('/home', async (req, res) => {
     const destination = req.body.destination;
 
     try {
-        let resultsUn = await BusDetailDB.find({
-            $and: [
-                { 'busStops.address': search },
-                { 'busStops.address': destination }
-            ]});
-			
+		   const searchRegex = new RegExp(search, 'i'); // 'i' flag for case-insensitive search
+    const destinationRegex = new RegExp(destination, 'i');
+
+    let resultsUn = await BusDetailDB.find({
+        $and: [
+            { 'busStops.address': { $regex: searchRegex } },
+            { 'busStops.address': { $regex: destinationRegex } }
+        ]
+    })
 		let results = resultsUn.map((busDetail) => {
             let sanitizedBusDetail = { ...busDetail.toObject() };
             delete sanitizedBusDetail.password;
@@ -324,10 +323,13 @@ app.get('/api/bus', async (req, res) => {
     const destination = req.query.destination;
 
     try {
+		
+		   const searchRegex = new RegExp(search, 'i'); // 'i' flag for case-insensitive search
+    const destinationRegex = new RegExp(destination, 'i');
         const results = await BusDetailDB.find({
             $and: [
-                { 'busStops.address': search },
-                { 'busStops.address': destination }
+                { 'busStops.address': searchRegex },
+                { 'busStops.address': destinationRegex }
             ]
         });
 
