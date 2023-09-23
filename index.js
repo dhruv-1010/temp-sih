@@ -319,31 +319,27 @@ app.post('/home', async (req, res) => {
         res.status(500).send('Error searching bus details');
     }
 });
-
 app.get('/api/bus', async (req, res) => {
-    const search = req.body.search;
-    const destination = req.body.destination;
+    const search = req.query.search;
+    const destination = req.query.destination;
 
     try {
-        let resultsUn = await BusDetailDB.find({
+        const results = await BusDetailDB.find({
             $and: [
                 { 'busStops.address': search },
                 { 'busStops.address': destination }
-            ]});
-		let results = resultsUn.map((busDetail) => {
-            let sanitizedBusDetail = { ...busDetail.toObject() };
-            delete sanitizedBusDetail.password;
-            return sanitizedBusDetail;
+            ]
         });
-        // Now 'results' contains documents where both 'search' and 'destination' are present in 'busStops'
-        console.log(results);
 
-        // Render the results to a view or send them as JSON response
-        res.status(200).json({results});
+        // Now 'results' contains documents where both 'search' and 'destination' are present in 'busStops'
+        console.log("some one run this");
+
+        // Return the results as JSON
+        res.status(200).json({ results });
     } catch (err) {
         console.error('Error searching bus details:', err);
         // Handle the error
-        res.status(500).send('Error searching bus details');
+        res.status(500).json({ error: 'Error searching bus details' });
     }
 });
 
