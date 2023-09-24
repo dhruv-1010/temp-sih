@@ -177,47 +177,6 @@ app.get('/auth/busLogin',(req,res)=>{
 	res.render('busLogin');
 })
 
-app.post('/auth/busLogin', async (req, res) => {
-    const { BusNo, password } = req.body;
-
-    try {
-        const bus = await BusDetailDB.findOne({ BusNo: BusNo }).exec();
-
-        if (!bus) {
-            const msg = {
-                "message": "Incorrect Login",
-                "error": "Please input correct Bus Number"
-            };
-						console.log('this ran with error no bus !!!');
-
-            // return res.redirect('/busLogin', { msg });
-			return res.status(404).send('error aya bus nhi mili bc')
-        }
-		
-        if (password === bus.password) {
-            bus.isLoggedIn = true;
-            await bus.save();
-			console.log('this ran !!!');
-            // Redirect or respond with a success message
-            return res.redirect(`/dashBoard/search?busId=${bus._id}`);
-        } else {
-            // Incorrect password
-            const msg = {
-                "message": "Incorrect Password",
-                "error": "Please input correct Password"
-            };
-						console.log('this ran with error !!!');
-
-            // return res.redirect('/busLogin', { msg });
-						return res.status(404).send('error aya password nhi mili bc')
-
-        }
-    } catch (error) {
-        console.error('An error occurred:', error);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
-});
-
 app.post('/android/busLogin', async (req, res) => {
     const { BusNo, password } = req.query;
 

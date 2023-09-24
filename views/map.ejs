@@ -48,10 +48,10 @@
 				top: calc(100% - 10px); /* Adjust the position of the bottom circle */
 			  }
 			  
-		#main{
+		/* #main{
 			display:grid;
 			grid-template-columns:repeat(2,1fr);
-		}
+		} */
 		/* Reset some default styles and set up the overall layout */
 body {
   margin: 0;
@@ -94,19 +94,26 @@ nav {
 
 /* Container styles */
 #main {
-  display: grid;
-  grid-template-rows: 1fr 2fr; /* Adjust the column sizes as needed */
+  display: flex;
+  /* grid-template-rows: 1fr 2fr; Adjust the column sizes as needed */
 }
 
 #box {
+  flex: 1;	
   padding: 20px;
   background-color: white; /* Set the background color of the box */
 }
 
 /* Map styles */
 #myMap {
-  height: 80vh; /* Set the map height to 80% of the container */
+  flex: 1;	/* Set the map height to 80% of the container */
   width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+	#main{
+		flex-direction: column;
+	}
 }
 
 /* Additional styles can be added as needed */
@@ -116,14 +123,14 @@ nav {
     </head>
     <body>
 	<nav style="color:black;">
-        <div class="nav__logo"style="color:black;"><a href="#">FindRide</a></div>
+        <div class="nav__logo"style="color:black;"><a href="#">SmartBus</a></div>
         <ul class="nav__links">
           <li class="link"><a href="#home">Home</a></li>
           <li class="link"><a href="#trending">Login</a></li>
           <li class="link"><a href="#destination">Destinations</a></li>
         </ul>
       </nav>
-	  <nav class="sidebar close">
+	  <!-- <nav class="sidebar close">
         <header>
             <div class="image-text">
                 <span class="image">
@@ -163,16 +170,13 @@ nav {
 
             </div>
         </div>
-	</nav>
+	</nav> -->
 	<div id="main">
 		<div id ="box">
 		
-		<div id="info"></div>
-		
+			<div id="info"></div>
 			<div id="everything" class="vertical-list"></div>
-		
-
-		
+						
 		</div>
         <div id='myMap' style="height:100vh;"></div>
 		 <script src="/socket.io/socket.io.js"></script>
